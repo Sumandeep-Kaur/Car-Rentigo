@@ -1,0 +1,57 @@
+<app-header></app-header>
+
+<div class="container py-5">
+    <div class="row bg-skew p-3">
+        <div class="col-lg">
+            <div class="bg-white p-4 rounded border border-danger">
+                <h5 class="fs-3 fw-bold mb-3 text-orange">Register</h5>
+                <form novalidate [formGroup]="signupForm" (ngSubmit)="register()">
+                  <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" formControlName="name" placeholder="Enter Your Name"
+                      [class.is-invalid]="Name.invalid && Name.touched" />
+                    <small [class.d-none]="Name.valid || Name.untouched" class="text-danger">Name is required</small>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Email address</label>
+                    <input type="email" class="form-control" formControlName="email" placeholder="Enter Email address"
+                      [ngClass]="{'is-invalid': (Email.touched || Email.dirty) && !Email.valid}">
+                    <span *ngIf="Email.invalid && Email.touched">
+                      <small *ngIf="Email.errors?.required" class="text-danger">Email is required</small>
+                      <small *ngIf="Email.errors?.email" class="text-danger">Enter valid email address</small>
+                    </span>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" formControlName="password" placeholder="Enter Password"
+                      [ngClass]="{'is-invalid': (Password.touched || Password.dirty) && !Password.valid}">
+                    <span *ngIf="Password.invalid && Password.touched">
+                      <small *ngIf="Password.errors?.required" class="text-danger">Password is required</small>
+                      <small *ngIf="Password.errors?.pattern" class="text-danger">Password must be atleast 8 characters long, contain atleast one number, one uppercase and one lowercase character.</small>
+                    </span>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" formControlName="confirmPass" placeholder="Enter Password"
+                      [ngClass]="{'is-invalid': (ConfirmPass.touched || ConfirmPass.dirty) && !ConfirmPass.valid}">
+                    <span *ngIf="ConfirmPass.invalid && ConfirmPass.touched">
+                      <small *ngIf="ConfirmPass.errors?.required" class="text-danger">Password confirmation is required</small>
+                      <small *ngIf="ConfirmPass.errors?.match" class="text-danger">Confirm Password must be same as
+                        Password</small>
+                    </span>
+                  </div>
+                  <button type="submit" [disabled]="!signupForm.valid" class="btn btn-orange px-4">Sign Up</button>
+                </form>
+                <div class="mt-2">
+                  Already have an account? <a class="text-orange" routerLink="/login">Sign in</a>
+                </div>
+              </div>
+        </div>
+        <div class="col-lg">
+            <img src="https://demo.xpeedstudio.com/carrental/home-v4/wp-content/uploads/sites/5/2020/06/banner_car.png"
+                class="img-fluid d-none d-lg-block" alt="image">
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>

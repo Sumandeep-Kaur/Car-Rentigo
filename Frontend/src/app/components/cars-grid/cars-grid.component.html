@@ -1,0 +1,147 @@
+<div class="container my-5 pt-5">
+
+  <div class="container bg-white shadow-sm p-5 mb-5">
+    <h3 class="fw-bold mb-5">Search Cars</h3>
+    <form novalidate [formGroup]="searchForm">
+      <div class="row">
+        <div class="col-md">
+          <label class="fw-bold mb-2"><i class="fa fa-car text-orange"></i> Search Filter</label>
+          <select class="form-select py-3 rounded-1 text-secondary" formControlName="searchBy"
+            (change)="changeFilter($event)">
+            <option value="">Select filter to search car</option>
+            <option value="Brand">Brand</option>
+            <option value="Model">Model</option>
+            <option value="Price">Price</option>
+            <option value="Color">Color</option>
+          </select>
+        </div>
+        <div class="col-md mt-3 mt-md-0">
+          <label class="fw-bold mb-2"><i class="fa fa-car text-orange"></i> Search Value</label>
+          <input type="text" class="form-control py-3 rounded-1 text-secondary" formControlName="searchValue"
+            [class.is-invalid]="SearchValue.invalid && SearchValue.touched" />
+          <span *ngIf="SearchValue.invalid && SearchValue.touched">
+            <small *ngIf="SearchValue.errors?.required" class="text-danger">Filter Value is required</small>
+          </span>
+        </div>
+        <div class="col-md mt-3 mt-md-0 d-grid align-items-end">
+          <button type="submit" [disabled]="!searchForm.valid" (click)="searchCar()"
+            class="btn btn-orange fw-bold fs-5 py-3 rounded-1">Search</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="searchedCars.length > 0" class="mt-5 pt-4">
+    <h3 class="display-6 text-orange text-center fw-bold my-5">Search Results</h3>
+      <div class="d-flex justify-content-center align-content-around flex-wrap">
+        <div *ngFor="let car of searchedCars" class="card shadow m-3" style="width: 20rem;">
+          <img src={{car.imageUrl}} class="card-img-top" alt="car-image img-fluid" height="220px">
+          <div class="card-body mt-2">
+            <span *ngIf="car.isAvailable" class="badge bg-success">Available</span>
+            <span *ngIf="!car.isAvailable" class="badge bg-danger">Not Available</span>
+            <h5 class="card-title text-orange fs-4 fw-bold mt-2">{{car.name}}</h5>
+            <table class="table table-sm table-borderless">
+              <tbody>
+                <tr>
+                  <td><i class="fa fa-car"></i> {{car.color}}</td>
+                  <td><i class="fa fa-gas-pump"></i> {{car.fuelType}}</td>
+                </tr>
+                <tr>
+                  <td><i class="fa fa-user-group"></i> {{car.capacity}} Seats</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="d-flex justify-content-between align-items-end mt-3">
+              <span class="fs-4 fw-bold">${{car.price}}<span class="lead text-secondary">/day</span> </span>
+              <button [disabled]="!car.isAvailable" class="btn btn-orange fw-bold" (click)="openBookModal(car)"
+                data-bs-toggle="modal" data-bs-target="#bookModal">
+                Book Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+
+  <div class="mt-5 pt-4">
+    <div class="d-flex justify-content-between my-5">
+      <h3 class="display-6 text-orange fw-bold">Featured Cars</h3>
+      <button (click)="sortCars()" class="btn btn-orange rounded-1 fw-bold">Sort by Price <i class="fa fa-arrow-down"></i> </button>
+      
+  </div>
+
+    <div class="d-flex justify-content-center align-content-around flex-wrap">
+      <div *ngFor="let car of allCars" class="card shadow m-3" style="width: 20rem;">
+        <img src={{car.imageUrl}} class="card-img-top" alt="car-image img-fluid" height="220px">
+        <div class="card-body mt-2">
+          <span *ngIf="car.isAvailable" class="badge bg-success">Available</span>
+          <span *ngIf="!car.isAvailable" class="badge bg-danger">Not Available</span>
+          <h5 class="card-title text-orange fs-4 fw-bold mt-2">{{car.name}}</h5>
+          <table class="table table-sm table-borderless">
+            <tbody class="lh-1">
+              <tr>
+                <td><i class="fa fa-gear"></i> {{car.brand}}</td>
+                <td><i class="fa fa-user-group"></i> {{car.capacity}} Seats</td>
+              </tr>
+              <tr>
+                <td><i class="fa fa-car"></i> {{car.color}}</td>
+                <td><i class="fa fa-gas-pump"></i> {{car.fuelType}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="d-flex justify-content-between align-items-end mt-3">
+            <span class="fs-4 fw-bold">${{car.price}}<span class="lead text-secondary">/day</span> </span>
+            <button [disabled]="!car.isAvailable" class="btn btn-orange fw-bold" (click)="openBookModal(car)"
+              data-bs-toggle="modal" data-bs-target="#bookModal">
+              Book Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isAuthenticated()" class="modal fade" id="bookModal" tabindex="-1" role="dialog"
+      aria-labelledby="bookModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content p-2">
+          <div class="modal-header p-md-3">
+            <h5 class="modal-title" style="color: #515f7d;">Book Car</h5>
+            <button type="button" class="close border-0" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form novalidate [formGroup]="bookForm">
+              <div class="form-outline mb-3">
+                <label class="form-label">Car</label>
+                <input readonly type="text" class="form-control" [value]="car" />
+              </div>
+              <div class="form-outline mb-3">
+                <label class="form-label">Lease Start Date</label>
+                <input type="date" class="form-control" formControlName="rentalStartDate" min="{{todayDate | date: 'yyyy-MM-dd'}}"
+                  [ngClass]="{ 'is-invalid': (StartDate.touched || StartDate.dirty) && !StartDate.valid }" />
+                <span *ngIf="StartDate.invalid && StartDate.touched">
+                  <small *ngIf="StartDate.errors?.required" class="text-danger">Car Rent Duration is required</small>
+                </span>
+              </div>
+              <div class="form-outline mb-3">
+                <label class="form-label">Rent Duration (In Days)</label>
+                <input type="number" class="form-control" formControlName="rentDurationDays"
+                  placeholder="Enter Rent Duration in Days"
+                  [ngClass]="{ 'is-invalid': (RentDuration.touched || RentDuration.dirty) && !RentDuration.valid }" />
+                <span *ngIf="RentDuration.invalid && RentDuration.touched">
+                  <small *ngIf="RentDuration.errors?.required" class="text-danger">Car Rent Duration is required</small>
+                </span>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" [disabled]="!bookForm.valid" (click)="bookCar()" class="btn btn-orange">Book</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

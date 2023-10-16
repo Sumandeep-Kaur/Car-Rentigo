@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-md navbar-light">
+    <div class="container">
+        <a class="navbar-brand me-2" href="#">
+            <img src="../../../assets/logo.png" alt="logo" height="48" loading="lazy">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+        <div class="collapse navbar-collapse" id="navbarToggle">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li *ngIf="isAuthenticated() && isAdmin()" class="nav-item me-2">
+                    <a routerLink="/admin" class="nav-link fw-bold text-dark">Admin Area</a>
+                </li>
+                <li *ngIf="isAuthenticated() && !isAdmin()" class="nav-item me-2">
+                    <a [routerLink]="['/my-rentals', getUserId()]" class="nav-link fw-bold text-dark">My Rentals</a>
+                </li>
+            </ul>
+
+            <div class="d-flex align-items-center">
+                <button *ngIf="!isAuthenticated()" class="btn fw-bold me-2" routerLink="/login">Login</button>
+                <button *ngIf="!isAuthenticated()" class="btn px-4 py-3 fw-bold btn-orange" routerLink="/register">Register</button>
+                <button *ngIf="isAuthenticated()" class="btn btn-orange px-3 py-2 fw-bold" (click)="logout()">Logout</button>
+            </div>
+        </div>
+    </div>
+</nav>

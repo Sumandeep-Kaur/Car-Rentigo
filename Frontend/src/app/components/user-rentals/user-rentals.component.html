@@ -1,0 +1,36 @@
+<app-header></app-header>
+
+<div class="container my-5">
+  <h2 class="text-orange fw-bold mb-4">My Rentals</h2>
+  <div class="d-flex justify-content-center align-content-around flex-wrap">
+    <div *ngFor="let rental of rentals" class="card shadow m-3 bg-orange" style="width: 22rem;">
+      <img src={{rental.car.imageUrl}} class="card-img-top" height="240px" alt="car-image">
+      <div class="card-body">
+        <h5 class="card-title text-orange fs-4 fw-bold">{{rental.car.name}}</h5>
+        <table class="table table-sm table-borderless text-secondary">
+          <tbody class="lh-1">
+            <tr>
+              <td><i class="fa fa-car"></i> {{rental.car.color}}</td>
+              <td><i class="fa fa-user-group"></i> {{rental.car.capacity}} Seats</td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-gear"></i> {{rental.car.brand}}</td>
+              <td><i class="fa fa-gas-pump"></i> {{rental.car.fuelType}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="text-secondary">
+          <div class="fw-bold text-orange">LEASE TERMS</div>
+          <div>● Daily Cost: ${{rental.car.price}}</div>
+          <div>● Total Cost: ${{rental.totalCost}}</div>
+          <div>● Start Date: {{rental.rentalStartDate | date}}</div>
+          <div>● End Date: {{rental.rentalEndDate | date}}</div>
+        </div>
+        <button *ngIf="!rental.requestForReturn" class="btn btn-orange mt-3 fw-bold" (click)="requestForReturn(rental.id)">Request For Return</button>
+        <button *ngIf="rental.requestForReturn" disabled class="btn btn-orange mt-3 fw-bold">Requested For Return</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

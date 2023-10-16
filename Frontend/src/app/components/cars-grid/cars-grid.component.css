@@ -1,0 +1,12 @@
+.card {
+    overflow: hidden;
+}
+.card:hover {
+    top: -5px;
+}
+.card-img-top {
+    transition: transform ease-in-out .5s;
+}
+.card:hover .card-img-top {
+    transform: scale(1.15);
+}

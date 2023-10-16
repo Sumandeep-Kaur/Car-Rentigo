@@ -1,0 +1,26 @@
+body {
+    background: #faf4f2;
+}
+.bg-orange {
+    background: #f8f5f4;
+}
+.btn-orange {
+    color: #FFFFFF;
+    background-size: 300% 100%;
+    box-shadow: 0px 10px 15px 0px rgba(255, 83, 48, 0.35);
+    background-image: linear-gradient(to right,#ff4c30,#ff6830,#fff,#f3806f);
+}
+.btn-orange:hover {
+    color: #FFFFFF;
+    box-shadow: 2px 5px 15px 0px rgba(255, 83, 48, 0.35);
+}
+.btn-orange:disabled {
+    color: white;
+    opacity: 0.8;
+}
+.text-orange {
+    color: #ff6830;
+}
+#toast-container > div {
+    opacity:1;
+}
